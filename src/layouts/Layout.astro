@@ -1,0 +1,101 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Icon from '@/components/Icon.astro';
+import { buttonClasses } from '@/components/ui/button';
+import BookSearch from '@/features/book/components/BookSearch.astro';
+import BookSidebar from '@/features/book/components/BookSidebar.astro';
+import { getSearchParams } from '@/lib/search-params';
+import '@/styles/global.css';
+
+type Props = { title?: string };
+const { title = 'Astro Books' } = Astro.props;
+
+const description = 'Browse two million Goodreads books with Astro, server-rendered search, and URL-driven filters.';
+const searchParams = getSearchParams(Astro.url);
+
+const themeScript = `(function(){function a(){try{var t=localStorage.getItem("theme");var d=t==="dark"||((t==="system"||!t)&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d);}catch(e){}}a();if(!window.__themeInit){window.__themeInit=1;document.addEventListener("astro:after-swap",a);window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",a);window.__coverFailed=function(img){var d=document.createElement("div");d.setAttribute("role","img");d.setAttribute("aria-label","Cover unavailable for "+img.alt);d.className="text-muted absolute inset-0 flex items-center justify-center p-3 text-center text-sm";d.textContent="Cover unavailable";img.replaceWith(d);};}})();`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)" />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Astro Books" />
+    <meta property="og:title" content="Astro Books" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"
+    />
+    <script is:inline set:html={themeScript} />
+    <ClientRouter />
+  </head>
+  <body class="bg-surface text-black antialiased dark:bg-surface-dark dark:text-white">
+    <div class="group flex min-h-dvh">
+      <aside
+        class="border-divider bg-surface dark:border-divider-dark dark:bg-surface-dark sticky top-0 hidden h-dvh w-72 shrink-0 flex-col border-r px-5 py-5 md:flex"
+        style="view-transition-name: sidebar"
+      >
+        <BookSidebar idPrefix="desktop" searchParams={searchParams} />
+      </aside>
+
+      <div class="flex min-w-0 flex-1 flex-col">
+        <header
+          class="border-divider bg-surface/80 dark:border-divider-dark dark:bg-surface-dark/80 sticky top-0 z-20 flex items-center gap-2 border-b px-4 py-3 backdrop-blur-md backdrop-saturate-150 sm:gap-3 sm:px-6"
+          style="view-transition-name: site-header"
+        >
+          <button
+            aria-label="Open filters"
+            class={buttonClasses({ class: 'md:hidden', size: 'icon', variant: 'ghost' })}
+            data-action="open-sidebar"
+            type="button"
+          >
+            <Icon class="size-4" name="sliders-horizontal" />
+          </button>
+          <BookSearch searchParams={searchParams} />
+        </header>
+
+        <main class="flex min-w-0 flex-1 flex-col">
+          <slot />
+        </main>
+      </div>
+    </div>
+
+    <div class="group/ms" data-mobile-sidebar>
+      <div
+        aria-hidden="true"
+        class="fixed inset-0 z-40 hidden bg-black/45 backdrop-blur-[2px] group-data-[open]/ms:block md:group-data-[open]/ms:hidden"
+        data-action="close-sidebar"
+      >
+      </div>
+      <aside
+        aria-label="Filters"
+        class="border-divider bg-surface dark:border-divider-dark dark:bg-surface-dark fixed inset-y-0 left-0 z-50 hidden w-[min(20rem,calc(100vw-3rem))] max-w-full touch-pan-y flex-col overflow-x-hidden border-r pt-[max(1rem,env(safe-area-inset-top))] pr-4 pb-[max(1rem,env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))] shadow-2xl group-data-[open]/ms:flex md:group-data-[open]/ms:hidden"
+        data-mobile-sidebar-panel
+      >
+        <button
+          aria-label="Close filters"
+          class="text-muted hover:bg-card focus-visible:ring-accent dark:hover:bg-card-dark absolute top-[max(0.75rem,env(safe-area-inset-top))] right-3 grid size-9 place-items-center rounded-md hover:text-black focus-visible:ring-2 focus-visible:outline-none dark:hover:text-white"
+          data-action="close-sidebar"
+          type="button"
+        >
+          <Icon class="size-5" name="x" />
+        </button>
+        <BookSidebar idPrefix="mobile" mobile searchParams={searchParams} />
+      </aside>
+    </div>
+
+    <script>
+      import '@/scripts/client';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+---
+import Icon from '@/components/Icon.astro';
+import { cn } from '@/lib/utils';
+
+type Props = { class?: string; rating: number };
+const { class: className, rating } = Astro.props;
+const rounded = Math.round(rating * 2) / 2;
+---
+
+<span aria-label={`Rated ${rating.toFixed(1)} out of 5`} class={cn('inline-flex items-center gap-0.5', className)} role="img">
+  {
+    [0, 1, 2, 3, 4].map((index) => (
+      <Icon
+        class={
+          index + 1 <= rounded || index + 0.5 === rounded
+            ? 'size-4 text-warning fill-current'
+            : 'size-4 text-divider dark:text-divider-dark fill-current'
+        }
+        name="star"
+      />
+    ))
+  }
+</span>

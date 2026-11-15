@@ -1,0 +1,20 @@
+---
+import Range from '@/components/ui/Range.astro';
+import { API_DELAY_VALUES, formatApiDelay, getApiDelayMs } from '@/lib/url-state';
+import type { SearchParams } from '@/lib/url-state';
+
+type Props = { idPrefix: string; searchParams: SearchParams };
+const { idPrefix, searchParams } = Astro.props;
+const value = getApiDelayMs(searchParams);
+---
+
+<Range
+  hintEnd="3s"
+  hintStart="Off"
+  id={`${idPrefix}-api-delay`}
+  label="API delay"
+  name="delay"
+  readout={formatApiDelay(value)}
+  value={value}
+  values={API_DELAY_VALUES}
+/>

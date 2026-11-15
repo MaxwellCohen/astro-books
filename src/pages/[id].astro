@@ -1,0 +1,59 @@
+---
+import Icon from '@/components/Icon.astro';
+import EmptyState from '@/components/ui/EmptyState.astro';
+import ErrorState from '@/components/ui/ErrorState.astro';
+import { buttonClasses } from '@/components/ui/button';
+import BookDetail from '@/features/book/components/BookDetail.astro';
+import Layout from '@/layouts/Layout.astro';
+import { waitForApiDelay } from '@/lib/api-delay';
+import { getSearchParams } from '@/lib/search-params';
+import { getApiDelayMs } from '@/lib/url-state';
+import type { BookDetails } from '@/features/book/book-types';
+
+export const prerender = false;
+
+const { id } = Astro.params;
+const delayMs = getApiDelayMs(getSearchParams(Astro.url));
+
+let book: BookDetails | null = null;
+let errorMessage: string | undefined;
+try {
+  const { getBookById } = await import('@/features/book/book-queries.server');
+  await waitForApiDelay(delayMs);
+  book = await getBookById(id ?? '');
+} catch (error) {
+  console.error(error);
+  errorMessage = error instanceof Error ? error.message : 'Unknown error';
+  Astro.response.status = 500;
+}
+if (!book && errorMessage === undefined) Astro.response.status = 404;
+
+const backClass =
+  'text-muted hover:bg-card dark:hover:bg-card-dark -ml-1.5 mb-6 inline-flex w-fit items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium transition-colors hover:text-black dark:hover:text-white';
+---
+
+<Layout title={book ? `${book.title} · Astro Books` : 'Book not found · Astro Books'}>
+  {
+    errorMessage !== undefined ? (
+      <ErrorState body={errorMessage} title="Can't load this book">
+        <button class={buttonClasses({ class: 'mt-1', size: 'sm', variant: 'secondary' })} data-action="reload" type="button">
+          Try again
+        </button>
+      </ErrorState>
+    ) : book ? (
+      <div class="flex flex-1 flex-col px-4 py-5 sm:px-6">
+        <button class={backClass} data-action="back" type="button">
+          <Icon class="size-4" name="arrow-left" />
+          Back to books
+        </button>
+        <BookDetail book={book} />
+      </div>
+    ) : (
+      <EmptyState body="We couldn't find a book with that id." title="Book not found">
+        <a class={buttonClasses({ class: 'mt-1', variant: 'secondary' })} href="/">
+          Back to the shelf
+        </a>
+      </EmptyState>
+    )
+  }
+</Layout>

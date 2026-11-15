@@ -1,0 +1,15 @@
+---
+import Icon from '@/components/Icon.astro';
+
+type Props = { body?: string; title?: string };
+const { body, title = 'Something went wrong' } = Astro.props;
+---
+
+<div class="grid flex-1 place-items-center px-6 py-20 text-center">
+  <div class="flex max-w-sm flex-col items-center gap-3">
+    <Icon class="text-danger size-6" name="alert-triangle" />
+    <p class="text-sm font-medium text-black dark:text-white">{title}</p>
+    {body && <p class="text-muted text-sm leading-6">{body}</p>}
+    <slot />
+  </div>
+</div>

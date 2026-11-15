@@ -1,0 +1,73 @@
+---
+import Icon from '@/components/Icon.astro';
+import StarRating from '@/components/ui/StarRating.astro';
+import type { BookDetails } from '@/features/book/book-types';
+import { formatCount, getLanguageLabel } from '@/features/book/book-utils';
+import BookCover from '@/features/book/components/BookCover.astro';
+
+const DETAIL_SIZES = '(min-width: 768px) 18rem, 60vw';
+
+type Props = { book: BookDetails };
+const { book } = Astro.props;
+
+const rating = Number(book.average_rating);
+const hasRating = book.average_rating !== null && !Number.isNaN(rating);
+
+const facts = [
+  { icon: 'book-open', label: 'Pages', value: book.num_pages ? book.num_pages.toLocaleString() : 'Unknown' },
+  { icon: 'globe', label: 'Language', value: getLanguageLabel(book.language_code) },
+  { icon: 'calendar-days', label: 'Published', value: String(book.publication_year ?? 'Unknown') },
+  { icon: 'building-2', label: 'Publisher', value: book.publisher ?? 'Unknown' },
+  { icon: 'hash', label: 'ISBN', value: book.isbn ?? 'None', mono: true },
+] as const;
+---
+
+<article class="flex flex-col gap-8 md:flex-row md:gap-10">
+  <div class="mx-auto w-40 shrink-0 sm:w-48 md:mx-0 md:w-72">
+    <BookCover
+      class="shadow-soft ring-divider/70 dark:ring-divider-dark/70 ring-1"
+      priority
+      sizes={DETAIL_SIZES}
+      src={book.image_url}
+      thumbhash={book.thumbhash}
+      title={book.title}
+    />
+  </div>
+
+  <div class="min-w-0 flex-1">
+    <h1>{book.title}</h1>
+    {book.authors.length > 0 && <p class="text-muted mt-2 text-base sm:text-lg">{book.authors.join(', ')}</p>}
+
+    {
+      hasRating && (
+        <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1">
+          <StarRating rating={rating} />
+          <span class="text-sm font-semibold tabular-nums">{rating.toFixed(1)}</span>
+          {book.ratings_count ? (
+            <span class="text-muted text-sm tabular-nums">{formatCount(book.ratings_count)} ratings</span>
+          ) : null}
+        </div>
+      )
+    }
+
+    {book.description && <p class="text-muted mt-6 max-w-prose text-sm leading-7">{book.description}</p>}
+
+    <dl class="border-divider dark:border-divider-dark mt-8 grid grid-cols-1 gap-x-8 gap-y-4 border-t pt-6 sm:grid-cols-2">
+      {
+        facts.map((fact) => (
+          <div class="flex items-start gap-3">
+            <span class="text-muted mt-0.5 shrink-0">
+              <Icon class="size-4" name={fact.icon} />
+            </span>
+            <div class="min-w-0">
+              <dt class="text-muted text-xs font-semibold tracking-wide uppercase">{fact.label}</dt>
+              <dd class="mt-0.5 truncate text-sm">
+                {'mono' in fact ? <span class="font-mono text-xs">{fact.value}</span> : fact.value}
+              </dd>
+            </div>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</article>

@@ -1,0 +1,52 @@
+---
+import BookMark from '@/components/BookMark.astro';
+import Icon from '@/components/Icon.astro';
+import ThemeToggle from '@/components/theme/ThemeToggle.astro';
+import ApiDelay from '@/features/book/components/ApiDelay.astro';
+import BookFilters from '@/features/book/components/BookFilters.astro';
+import { buildHref } from '@/lib/url-state';
+import type { SearchParams } from '@/lib/url-state';
+
+type Props = { idPrefix: string; mobile?: boolean; searchParams: SearchParams };
+const { idPrefix, mobile = false, searchParams } = Astro.props;
+
+const homeHref = buildHref({ delay: searchParams.delay });
+---
+
+<div class="flex items-center justify-between gap-2">
+  <a
+    aria-label="Astro Books home"
+    class="inline-flex items-center gap-2 text-base font-semibold tracking-tight"
+    href={homeHref}
+  >
+    <BookMark class="text-action size-5" />
+    Astro Books
+  </a>
+</div>
+<div class="border-divider dark:border-divider-dark mt-6 border-b pb-5">
+  <div>
+    <p class="text-2xl font-semibold tracking-tight tabular-nums">2M+</p>
+    <p class="text-muted mt-1 text-xs leading-5">books from Goodreads. Built on Astro.</p>
+  </div>
+</div>
+<div class="mt-5 mb-4">
+  <ApiDelay idPrefix={idPrefix} searchParams={searchParams} />
+</div>
+<p class="text-muted mb-4 text-xs font-semibold tracking-wide uppercase">Filters</p>
+<BookFilters idPrefix={idPrefix} searchParams={searchParams} />
+{
+  !mobile && (
+    <div class="border-divider dark:border-divider-dark mt-4 flex items-center justify-between gap-2 border-t pt-4">
+      <ThemeToggle variant="inline" />
+      <a
+        aria-label="View source on GitHub"
+        class="text-muted rounded-full p-1.5 transition-colors hover:text-black dark:hover:text-white"
+        href="https://github.com/withastro/astro"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <Icon class="size-4" name="github" />
+      </a>
+    </div>
+  )
+}

@@ -1,0 +1,14 @@
+---
+import EmptyState from '@/components/ui/EmptyState.astro';
+import { buttonClasses } from '@/components/ui/button';
+import Layout from '@/layouts/Layout.astro';
+
+export const prerender = false;
+Astro.response.status = 404;
+---
+
+<Layout title="Page not found · Astro Books">
+  <EmptyState body="That page isn't in the catalog." title="Page not found">
+    <a class={buttonClasses({ class: 'mt-1', variant: 'secondary' })} href="/">Back to the shelf</a>
+  </EmptyState>
+</Layout>

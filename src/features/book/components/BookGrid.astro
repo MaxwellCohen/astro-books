@@ -1,0 +1,25 @@
+---
+import EmptyState from '@/components/ui/EmptyState.astro';
+import { PRIORITY_COVER_COUNT } from '@/features/book/book-constants';
+import type { BookSummary } from '@/features/book/book-types';
+import BookCard from '@/features/book/components/BookCard.astro';
+import type { SearchParams } from '@/lib/url-state';
+
+type Props = { books: BookSummary[]; searchParams: SearchParams };
+const { books, searchParams } = Astro.props;
+---
+
+{
+  books.length === 0 ? (
+    <EmptyState
+      body="Nothing matched these filters. Try widening the year range or clearing the search."
+      title="No books found"
+    />
+  ) : (
+    <div class="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7">
+      {books.map((book, index) => (
+        <BookCard book={book} priority={index < PRIORITY_COVER_COUNT} searchParams={searchParams} />
+      ))}
+    </div>
+  )
+}

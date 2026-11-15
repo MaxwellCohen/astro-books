@@ -1,0 +1,29 @@
+---
+import Icon from '@/components/Icon.astro';
+import { cn } from '@/lib/utils';
+
+type Props = { variant?: 'inline' | 'pill' };
+const { variant = 'pill' } = Astro.props;
+
+const item =
+  'text-muted hover:text-black dark:hover:text-white aria-pressed:bg-card dark:aria-pressed:bg-card-dark aria-pressed:text-black dark:aria-pressed:text-white rounded-full p-1.5 transition-colors';
+const options = [
+  { theme: 'light', label: 'Light mode', icon: 'sun' },
+  { theme: 'dark', label: 'Dark mode', icon: 'moon' },
+  { theme: 'system', label: 'System theme', icon: 'monitor' },
+] as const;
+---
+
+<div
+  class={variant === 'inline'
+    ? 'inline-flex items-center gap-0.5'
+    : 'border-divider dark:border-divider-dark inline-flex items-center rounded-full border p-0.5'}
+>
+  {
+    options.map((option) => (
+      <button aria-label={option.label} aria-pressed="false" class={cn(item)} data-theme-set={option.theme} type="button">
+        <Icon class="size-4" name={option.icon} />
+      </button>
+    ))
+  }
+</div>

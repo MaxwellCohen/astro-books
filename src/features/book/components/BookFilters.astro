@@ -1,0 +1,119 @@
+---
+import Icon from '@/components/Icon.astro';
+import Range from '@/components/ui/Range.astro';
+import { buttonClasses } from '@/components/ui/button';
+import {
+  LANGUAGES,
+  LISTS,
+  MAX_PAGES,
+  MAX_RATING,
+  MAX_YEAR,
+  MIN_PAGES,
+  MIN_RATING,
+  MIN_YEAR,
+  PAGE_FILTER_VALUES,
+  RATING_FILTER_VALUES,
+  YEAR_FILTER_VALUES,
+} from '@/features/book/book-constants';
+import type { SearchParams } from '@/lib/url-state';
+
+type Props = { idPrefix: string; searchParams: SearchParams };
+const { idPrefix, searchParams: filters } = Astro.props;
+
+const activeCount = Object.entries(filters).filter(
+  ([key, value]) => key !== 'page' && key !== 'delay' && Boolean(value),
+).length;
+---
+
+<div class="flex min-h-0 flex-1 flex-col">
+  <div
+    class="min-h-0 flex-1 touch-pan-y [scrollbar-gutter:stable] overflow-x-hidden overflow-y-auto overscroll-contain px-1 pb-6"
+  >
+    <div class="flex flex-col gap-6">
+      <Range
+        hintEnd={String(MAX_YEAR)}
+        hintStart={String(MIN_YEAR)}
+        id={`${idPrefix}-filter-year`}
+        label="Published before"
+        name="year"
+        readout={filters.year ? filters.year : 'Any year'}
+        value={Number(filters.year ?? MAX_YEAR)}
+        values={YEAR_FILTER_VALUES}
+      />
+
+      <Range
+        hintEnd={`${MAX_RATING} stars`}
+        hintStart="Any"
+        id={`${idPrefix}-filter-rating`}
+        label="Minimum rating"
+        name="rating"
+        readout={Number(filters.rating) > 0 ? `${filters.rating}+ stars` : 'Any rating'}
+        value={Number(filters.rating ?? MIN_RATING)}
+        values={RATING_FILTER_VALUES}
+      />
+
+      <Range
+        hintEnd={MAX_PAGES.toLocaleString()}
+        hintStart={String(MIN_PAGES)}
+        id={`${idPrefix}-filter-pages`}
+        label="Max pages"
+        name="pages"
+        readout={filters.pages ? `${Number(filters.pages).toLocaleString()} pages` : 'Any length'}
+        value={Number(filters.pages ?? MAX_PAGES)}
+        values={PAGE_FILTER_VALUES}
+      />
+
+      <div class="flex flex-col gap-2">
+        <label class="text-muted text-xs font-semibold tracking-wide uppercase" for={`${idPrefix}-filter-language`}>
+          Language
+        </label>
+        <span class="relative block min-w-0">
+          <select
+            class="border-divider focus:border-accent focus:ring-accent/25 dark:border-divider-dark disabled:bg-card disabled:text-muted dark:disabled:bg-card-dark w-full appearance-none rounded-md border bg-white px-3 py-2 pr-8 text-sm text-black transition-colors focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 dark:bg-[#1c1c1c] dark:text-white"
+            data-filter="language"
+            id={`${idPrefix}-filter-language`}
+          >
+            {
+              LANGUAGES.map((language) => (
+                <option selected={language.value === (filters.language ?? 'en')} value={language.value}>
+                  {language.label}
+                </option>
+              ))
+            }
+          </select>
+          <Icon
+            class="text-muted pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2"
+            name="chevron-down"
+          />
+        </span>
+      </div>
+
+      <fieldset class="flex flex-col gap-2">
+        <legend class="text-muted mb-2 text-xs font-semibold tracking-wide uppercase">Book lists</legend>
+        {
+          LISTS.map((list) => (
+            <label class="hover:bg-card dark:hover:bg-card-dark -mx-2 flex cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-sm transition-colors">
+              <input
+                checked={filters.list === list.slug}
+                class="accent-action size-4 w-auto cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
+                data-filter-list={list.slug}
+                type="checkbox"
+              />
+              {list.name}
+            </label>
+          ))
+        }
+      </fieldset>
+    </div>
+  </div>
+
+  {
+    activeCount > 0 && (
+      <div class="border-divider dark:border-divider-dark border-t pt-3">
+        <button class={buttonClasses({ class: 'w-full', variant: 'secondary' })} data-action="clear-filters" type="button">
+          Clear all filters
+        </button>
+      </div>
+    )
+  }
+</div>

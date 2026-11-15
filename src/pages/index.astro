@@ -1,0 +1,53 @@
+---
+import ErrorState from '@/components/ui/ErrorState.astro';
+import { buttonClasses } from '@/components/ui/button';
+import { toBookFilters, toBookQuery } from '@/features/book/book-utils';
+import BookGrid from '@/features/book/components/BookGrid.astro';
+import BookPagination from '@/features/book/components/BookPagination.astro';
+import Layout from '@/layouts/Layout.astro';
+import { waitForApiDelay } from '@/lib/api-delay';
+import { getSearchParams } from '@/lib/search-params';
+import { getApiDelayMs } from '@/lib/url-state';
+
+export const prerender = false;
+
+const searchParams = getSearchParams(Astro.url);
+const query = toBookQuery(searchParams);
+const delayMs = getApiDelayMs(searchParams);
+
+let books;
+let totalResults = 0;
+let errorMessage: string | undefined;
+try {
+  const { getBooksCount, getBooksPage } = await import('@/features/book/book-queries.server');
+  [books, totalResults] = await Promise.all([
+    waitForApiDelay(delayMs).then(() => getBooksPage(query)),
+    waitForApiDelay(delayMs).then(() => getBooksCount(toBookFilters(query))),
+  ]);
+} catch (error) {
+  console.error(error);
+  errorMessage = error instanceof Error ? error.message : 'Unknown error';
+  Astro.response.status = 500;
+}
+---
+
+<Layout title="Books · Astro Books">
+  {
+    errorMessage !== undefined || !books ? (
+      <ErrorState body={errorMessage} title="Can't load books">
+        <button class={buttonClasses({ class: 'mt-1', size: 'sm', variant: 'secondary' })} data-action="reload" type="button">
+          Try again
+        </button>
+      </ErrorState>
+    ) : (
+      <div class="flex min-h-0 flex-1 flex-col">
+        <div class="flex-1 px-4 py-5 transition-opacity duration-200 ease-out group-has-[[data-filtering]]:opacity-60 sm:px-6">
+          <BookGrid books={books} searchParams={searchParams} />
+        </div>
+        <footer class="border-divider dark:border-divider-dark mt-auto border-t px-4 py-3 sm:px-6">
+          <BookPagination searchParams={searchParams} totalResults={totalResults} />
+        </footer>
+      </div>
+    )
+  }
+</Layout>

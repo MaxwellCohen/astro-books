@@ -1,0 +1,36 @@
+{
+  "name": "astro-books",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "start": "node --env-file-if-exists=.env ./dist/server/entry.mjs",
+    "typecheck": "astro check",
+    "deploy:vercel": "VERCEL=1 pnpm build && npx --yes vercel deploy --prebuilt --prod --yes",
+    "deploy:netlify": "NETLIFY=1 pnpm build && npx --yes netlify-cli deploy --prod --no-build",
+    "deploy:cloudflare": "CLOUDFLARE=1 pnpm build && rm -f dist/server/.dev.vars && wrangler deploy",
+    "preview:cloudflare": "CLOUDFLARE=1 pnpm build && wrangler dev"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^14.4.8",
+    "@astrojs/netlify": "^8.2.14",
+    "@astrojs/node": "^11.1.13",
+    "@astrojs/vercel": "^11.0.22",
+    "@neondatabase/serverless": "^1.2.1",
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^7.4.12",
+    "clsx": "^2.1.1",
+    "drizzle-orm": "^0.45.4",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss": "^4.3.5",
+    "thumbhash": "^0.1.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@types/node": "^26.6.6",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.162.0"
+  }
+}

@@ -1,0 +1,43 @@
+---
+import { thumbHashToDataURL } from 'thumbhash';
+import { EMPTY_IMAGE_URL, getLargeBookImageUrl } from '@/features/book/book-constants';
+import { cn } from '@/lib/utils';
+
+type Props = {
+  class?: string;
+  priority?: boolean;
+  sizes: string;
+  src: string | null;
+  thumbhash: string | null;
+  title: string;
+};
+
+const { class: className, priority = false, sizes, src, thumbhash, title } = Astro.props;
+
+const resolved = getLargeBookImageUrl(src ?? EMPTY_IMAGE_URL);
+
+function placeholder(hash: string | null) {
+  if (!hash) return undefined;
+  try {
+    return thumbHashToDataURL(new Uint8Array(Buffer.from(hash, 'base64')));
+  } catch {
+    return undefined;
+  }
+}
+
+const thumb = placeholder(thumbhash);
+---
+
+<div class={cn('bg-card dark:bg-card-dark relative aspect-[2/3] w-full overflow-hidden rounded-md', className)}>
+  <img
+    alt={title}
+    class="absolute inset-0 size-full object-cover"
+    decoding="async"
+    fetchpriority={priority ? 'high' : 'auto'}
+    loading={priority ? 'eager' : 'lazy'}
+    onerror="window.__coverFailed&&window.__coverFailed(this)"
+    sizes={sizes}
+    src={resolved}
+    style={thumb ? `background-image: url("${thumb}"); background-size: cover;` : undefined}
+  />
+</div>
