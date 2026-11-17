@@ -20,12 +20,24 @@ importers:
       '@astrojs/vercel':
         specifier: ^11.0.22
         version: 11.0.22(astro@7.4.12(@netlify/blobs@11.1.9)(@types/node@26.6.6)(@vercel/functions@3.11.3(ws@8.22.0))(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))(ws@8.22.0)
+      '@fontsource-variable/geist':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource-variable/geist-mono':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@neondatabase/serverless':
         specifier: ^1.2.1
         version: 1.2.1
+      '@netlify/blobs':
+        specifier: ^11.1.9
+        version: 11.1.9
       '@tailwindcss/vite':
         specifier: ^4.3.5
         version: 4.3.5(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
+      '@vercel/functions':
+        specifier: ^3.11.3
+        version: 3.11.3(ws@8.22.0)
       astro:
         specifier: ^7.4.12
         version: 7.4.12(@netlify/blobs@11.1.9)(@types/node@26.6.6)(@vercel/functions@3.11.3(ws@8.22.0))(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
@@ -761,6 +773,12 @@ packages:
 
   '@fastify/busboy@3.2.5':
     resolution: {integrity: sha512-y8MTAeBlEQUNVnskmZQwpseZN3EgCksQNOULlfxWY6o6VEqh01+oExMgbM7gN6YLQ8pNDYeweNPKJRt8jQm2ZQ==}
+
+  '@fontsource-variable/geist-mono@5.3.0':
+    resolution: {integrity: sha512-vBbuwDEo9AkrqADMXOrlAR3DFcJi4/JxeuU43FoiQERnNwsfXNnvxvReZG02cQKmyk4DZkZdBZX3oTDvy2zBAw==}
+
+  '@fontsource-variable/geist@5.3.0':
+    resolution: {integrity: sha512-j0m+vLQuG5XAYoHtGCVu0spvlGreR3EzpECUVzkFmI1mTVnAO38l/NEPDCFgZ177JxzYJCLSmTQibIiYPilGrA==}
 
   '@humanwhocodes/momoa@2.0.4':
     resolution: {integrity: sha512-RE815I4arJFtt+FVeU1Tgp9/Xvecacji8w/V6XtXsWWH/wz/eNkNbhb+ny/+PlVZjV0rxQpRSQKNKE3lcktHEA==}
@@ -5153,6 +5171,10 @@ snapshots:
     optional: true
 
   '@fastify/busboy@3.2.5': {}
+
+  '@fontsource-variable/geist-mono@5.3.0': {}
+
+  '@fontsource-variable/geist@5.3.0': {}
 
   '@humanwhocodes/momoa@2.0.4': {}
 

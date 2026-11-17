@@ -16,7 +16,14 @@ async function pickAdapter() {
 export default defineConfig({
   output: 'server',
   adapter: await pickAdapter(),
-  vite: { plugins: [tailwindcss()] },
+  vite: {
+    plugins: [tailwindcss()],
+    resolve: {
+      alias: isCloudflare
+        ? [{ find: /^(.*)\/catalog-kv$/, replacement: '$1/catalog-kv.cloudflare' }]
+        : [],
+    },
+  },
   env: {
     schema: {
       POSTGRES_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
