@@ -2,5 +2,11 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "astro-books-optimized",
   "compatibility_date": "2026-11-01",
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "kv_namespaces": [
+    {
+      "binding": "CATALOG_CACHE",
+      "id": "88c14271819346caa8bbb2c0cc44c766"
+    }
+  ]
 }
