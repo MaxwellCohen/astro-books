@@ -14,13 +14,13 @@
     "preview:cloudflare": "CLOUDFLARE=1 pnpm build && wrangler dev"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.4.8",
+    "@astrojs/cloudflare": "^14.4.9",
     "@astrojs/netlify": "^8.2.14",
-    "@astrojs/node": "^11.1.13",
+    "@astrojs/node": "^11.1.14",
     "@astrojs/vercel": "^11.0.22",
     "@neondatabase/serverless": "^1.2.1",
     "@tailwindcss/vite": "^4.3.5",
-    "astro": "^7.4.12",
+    "astro": "^7.4.13",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.4",
     "tailwind-merge": "^3.7.0",
