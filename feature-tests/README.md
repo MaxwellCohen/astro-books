@@ -18,11 +18,11 @@ Pages live at `/feature-tests/<id>` (`src/pages/feature-tests/`).
 
 | Feature | Implementation | What the test proves |
 | --- | --- | --- |
-| css-inlining | `build.inlineStylesheets: 'always'` | the route's scoped CSS is in an inline `<style>`, with no `<link rel=stylesheet>` |
+| css-inlining | default `build.inlineStylesheets: 'auto'` | the route's scoped CSS is in an inline `<style>` and in no linked stylesheet |
 | font-optimization | `fonts` config (local provider) + `<Font cssVariable preload />` | `<link rel=preload as=font>` to `/_astro/fonts/…`, `@font-face` with `font-display:swap`, no Google Fonts requests, font loaded |
 | image-pipeline | `<Image layout="constrained" />` (Sharp) | `srcset` has ≥2 widths, `width`/`height` are set, the offscreen image has `loading=lazy`, and a srcset URL returns `image/webp` |
 | caching | `cache: { provider: memoryCache() }` + `Astro.cache.set({ maxAge: 5, tags })` | the timestamp repeats on the 2nd request (`x-astro-cache: HIT`) and changes after `cache.invalidate({ tags })` and after the TTL |
-| route-prefetching | `prefetch` config + `data-astro-prefetch="hover"` | hovering requests the target route before the click |
+| route-prefetching | `prefetch: true` config + `data-astro-prefetch="hover"` | hovering requests the target route before the click |
 | islands | Solid `client:load` island + Solid component without a directive | the island counter works, and the static component's marker string is in no shipped JS |
 | render-modes | `prerender = true` vs `prerender = false` | the prerendered HTML exists in `dist/client` with a stable timestamp; the on-demand route's timestamp changes per request |
 | reactivity | Solid `createSignal` via `@astrojs/solid-js` | the text updates 0→3 while the component's render counter stays at 1 |

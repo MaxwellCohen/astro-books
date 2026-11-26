@@ -32,13 +32,12 @@ async function analyzePlugins() {
 export default defineConfig({
   output: 'server',
   adapter: await pickAdapter(),
+  // feature-tests/route-prefetching: loads Astro's prefetch script so data-astro-prefetch links work.
+  // `true` (not prefetchAll) leaves links without the attribute alone.
+  prefetch: true,
   // feature-tests/islands + reactivity: Solid islands (official integration).
   // feature-tests/third-party-scripts: official Partytown integration.
   integrations: [solid(), partytown()],
-  // feature-tests/css-inlining: built-in stylesheet inlining.
-  build: { inlineStylesheets: 'always' },
-  // feature-tests/route-prefetching: built-in prefetch (ClientRouter already implied prefetchAll).
-  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   // feature-tests/font-optimization: built-in Fonts API with a local (self-hosted) source.
   fonts: [
     {
