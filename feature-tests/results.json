@@ -1,14 +1,14 @@
 {
   "framework": "astro",
   "repo": "astro-books",
-  "commit": "545dded0161655f442235ba0e1ca9e625091da35",
-  "ranAt": "2026-11-26T04:53:54.255Z",
+  "commit": "6f94fb00e3ae687a0220f116dd366b67da124eec",
+  "ranAt": "2026-11-26T05:23:04.724Z",
   "results": {
     "css-inlining": {
       "claimedLabel": "first-party",
       "status": "pass",
-      "method": "build.inlineStylesheets: 'always' in astro.config.mjs",
-      "evidence": "inline <style> contains the route's scoped .ft-css-marker rule; 0 <link rel=stylesheet> in the HTML",
+      "method": "Astro default build.inlineStylesheets: 'auto' (no config change)",
+      "evidence": "inline <style> contains the route's scoped .ft-css-marker rule; 0 <link rel=stylesheet> in the HTML, none holding the route rule",
       "test": "feature-tests/css-inlining.spec.ts"
     },
     "font-optimization": {
@@ -29,14 +29,14 @@
       "claimedLabel": "first-party",
       "status": "pass",
       "method": "cache: { provider: memoryCache() } + Astro.cache.set({ maxAge: 5, tags }) + cache.invalidate({ tags })",
-      "evidence": "2nd request reused stamp 1795668812089-0oi2tq (x-astro-cache: HIT); after invalidate → new stamp; after 6.5 s TTL → new stamp again",
+      "evidence": "2nd request reused stamp 1795670574167-6rurfv (x-astro-cache: HIT); after invalidate → new stamp; after 6.5 s TTL → new stamp again",
       "test": "feature-tests/caching.spec.ts"
     },
     "route-prefetching": {
       "claimedLabel": "first-party",
       "status": "pass",
       "method": "prefetch: { prefetchAll: true, defaultStrategy: 'hover' } + data-astro-prefetch=\"hover\"",
-      "evidence": "no request for the target on load; hover fired GET /feature-tests/prefetch-target 42 ms before the click",
+      "evidence": "no request for the target on load; hover fired GET /feature-tests/prefetch-target 37 ms before the click",
       "test": "feature-tests/route-prefetching.spec.ts"
     },
     "islands": {
