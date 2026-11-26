@@ -1,0 +1,14 @@
+---
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+export const prerender = true;
+---
+
+<FtLayout title="css-inlining">
+  <p class="ft-css-marker">
+    <code>build.inlineStylesheets</code> (default <code>'auto'</code>) inlines this page's scoped CSS into a <code>&lt;style&gt;</code> tag.
+  </p>
+</FtLayout>
+
+<style>
+  .ft-css-marker { --ft-css-marker: inlined; border-left: 6px solid rgb(12, 34, 56); padding-left: 0.75rem; }
+</style>

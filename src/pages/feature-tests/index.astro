@@ -1,0 +1,13 @@
+---
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+export const prerender = true;
+const features = [
+  'css-inlining', 'font-optimization', 'image-pipeline', 'caching', 'route-prefetching', 'islands',
+  'render-modes', 'reactivity', 'bundle-analysis', 'third-party-scripts', 'multi-host-deployment',
+];
+---
+
+<FtLayout title="Feature tests">
+  <p>One page per Framework Compare feature. Each is checked by <code>feature-tests/&lt;id&gt;.spec.ts</code>.</p>
+  <ul>{features.map((f) => <li><a href={`/feature-tests/${f}`}>{f}</a></li>)}</ul>
+</FtLayout>

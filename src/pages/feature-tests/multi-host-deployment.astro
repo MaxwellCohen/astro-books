@@ -1,0 +1,12 @@
+---
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+export const prerender = true;
+---
+
+<FtLayout title="multi-host-deployment">
+  <p>
+    <code>astro.config.mjs</code> picks an official adapter from the environment: <code>@astrojs/node</code> (default),
+    <code>@astrojs/vercel</code> (<code>VERCEL=1</code>), <code>@astrojs/netlify</code> (<code>NETLIFY=1</code>),
+    <code>@astrojs/cloudflare</code> (<code>CLOUDFLARE=1</code>). The test builds for several and checks each output.
+  </p>
+</FtLayout>

@@ -1,0 +1,10 @@
+---
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+// Rendered on demand for every request.
+export const prerender = false;
+const stamp = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<FtLayout title="render-modes (on-demand)">
+  <p><code>export const prerender = false</code>. Rendered at: <span id="ft-stamp">{stamp}</span></p>
+</FtLayout>

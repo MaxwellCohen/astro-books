@@ -1,0 +1,9 @@
+---
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+export const prerender = true;
+---
+
+<FtLayout title="route-prefetching">
+  <p>Built-in <code>prefetch</code> config. Hover the link to prefetch its target before the click.</p>
+  <p><a id="ft-prefetch-link" href="/feature-tests/prefetch-target" data-astro-prefetch="hover">Go to the prefetch target</a></p>
+</FtLayout>
