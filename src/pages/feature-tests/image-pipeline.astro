@@ -1,0 +1,13 @@
+---
+import { Image } from 'astro:assets';
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+import sample from '@/assets/feature-tests/sample.png';
+export const prerender = true;
+---
+
+<FtLayout title="image-pipeline">
+  <p><code>&lt;Image layout="constrained" /&gt;</code> from <code>astro:assets</code> (Sharp service).</p>
+  <Image id="ft-hero" src={sample} alt="Gradient (above the fold)" width={800} height={500} layout="constrained" loading="eager" />
+  <div style="height: 3000px">Spacer to push the next image offscreen.</div>
+  <Image id="ft-offscreen" src={sample} alt="Gradient (offscreen)" width={800} height={500} layout="constrained" />
+</FtLayout>

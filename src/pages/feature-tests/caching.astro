@@ -1,0 +1,13 @@
+---
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+export const prerender = false;
+// Built-in route cache (astro@7): cached by the memoryCache() provider for 5 s.
+Astro.cache.set({ maxAge: 5, tags: ['ft-cache'] });
+const stamp = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<FtLayout title="caching">
+  <p><code>Astro.cache.set(&#123; maxAge: 5, tags: ['ft-cache'] &#125;)</code> + <code>cache: &#123; provider: memoryCache() &#125;</code>.</p>
+  <p>Rendered at: <span id="ft-stamp">{stamp}</span></p>
+  <form method="post" action="/feature-tests/caching-invalidate"><button>Invalidate tag ft-cache</button></form>
+</FtLayout>

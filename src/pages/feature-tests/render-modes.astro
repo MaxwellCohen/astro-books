@@ -1,0 +1,11 @@
+---
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+// output: 'server' + prerender = true: rendered once at build time.
+export const prerender = true;
+const stamp = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<FtLayout title="render-modes (prerendered)">
+  <p><code>export const prerender = true</code>. Built at: <span id="ft-stamp">{stamp}</span></p>
+  <p><a href="/feature-tests/render-modes/ssr">On-demand variant</a></p>
+</FtLayout>

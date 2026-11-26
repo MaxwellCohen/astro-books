@@ -1,0 +1,10 @@
+---
+import Reactive from '@/components/feature-tests/Reactive';
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+export const prerender = true;
+---
+
+<FtLayout title="reactivity">
+  <p>Astro components have no reactivity; the official <code>@astrojs/solid-js</code> integration brings Solid signals to an island.</p>
+  <Reactive client:load />
+</FtLayout>

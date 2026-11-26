@@ -1,0 +1,14 @@
+---
+import { Font } from 'astro:assets';
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+export const prerender = true;
+---
+
+<FtLayout title="font-optimization">
+  <Font cssVariable="--font-ft" preload slot="head" />
+  <p class="ft-font">This text uses Geist through Astro's Fonts API (<code>fonts</code> config + <code>&lt;Font preload /&gt;</code>).</p>
+</FtLayout>
+
+<style>
+  .ft-font { font-family: var(--font-ft); font-size: 1.5rem; font-weight: 600; }
+</style>

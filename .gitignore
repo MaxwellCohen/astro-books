@@ -8,3 +8,7 @@ dist
 .netlify
 .wrangler
 .dev.vars
+/feature-tests/reports
+/feature-tests/.out
+/feature-tests/test-results
+test-results

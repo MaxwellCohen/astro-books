@@ -1,0 +1,12 @@
+---
+import Counter from '@/components/feature-tests/Counter';
+import StaticBadge from '@/components/feature-tests/StaticBadge';
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+export const prerender = true;
+---
+
+<FtLayout title="islands">
+  <p>Zero JS by default; <code>client:load</code> hydrates only the counter.</p>
+  <StaticBadge />
+  <Counter client:load />
+</FtLayout>

@@ -1,0 +1,11 @@
+---
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+export const prerender = true;
+---
+
+<FtLayout title="bundle-analysis">
+  <p>
+    No built-in analyzer. Following Astro's recipe, <code>ANALYZE=1 astro build</code> adds
+    <code>rollup-plugin-visualizer</code> and writes <code>feature-tests/reports/bundle-stats.html</code>.
+  </p>
+</FtLayout>

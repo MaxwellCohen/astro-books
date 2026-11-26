@@ -1,0 +1,9 @@
+---
+import FtLayout from '@/components/feature-tests/FtLayout.astro';
+export const prerender = true;
+---
+
+<FtLayout title="third-party-scripts">
+  <script slot="head" type="text/partytown" src="/ft-third-party.js"></script>
+  <p>A stand-in third-party script runs in a Partytown web worker (<code>type="text/partytown"</code>).</p>
+</FtLayout>
