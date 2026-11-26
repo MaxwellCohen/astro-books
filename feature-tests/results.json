@@ -1,0 +1,86 @@
+{
+  "framework": "astro",
+  "repo": "astro-books",
+  "commit": "545dded0161655f442235ba0e1ca9e625091da35",
+  "ranAt": "2026-11-26T04:53:54.255Z",
+  "results": {
+    "css-inlining": {
+      "claimedLabel": "first-party",
+      "status": "pass",
+      "method": "build.inlineStylesheets: 'always' in astro.config.mjs",
+      "evidence": "inline <style> contains the route's scoped .ft-css-marker rule; 0 <link rel=stylesheet> in the HTML",
+      "test": "feature-tests/css-inlining.spec.ts"
+    },
+    "font-optimization": {
+      "claimedLabel": "first-party",
+      "status": "pass",
+      "method": "top-level `fonts` config (fontProviders.local, Geist woff2) + <Font cssVariable preload /> from astro:assets",
+      "evidence": "preload /_astro/fonts/f528153258489182.woff2; 2 @font-face with font-display:swap incl. size-adjusted fallback; font served from /_astro/fonts, 0 Google Fonts requests; document.fonts reports Geist FT loaded",
+      "test": "feature-tests/font-optimization.spec.ts"
+    },
+    "image-pipeline": {
+      "claimedLabel": "first-party",
+      "status": "pass",
+      "method": "<Image layout=\"constrained\" /> from astro:assets with the default Sharp service",
+      "evidence": "srcset has 7 widths (640w 750w 800w 828w 1080w 1280w 1600w); width=800 height=500; offscreen img loading=lazy; /_astro/sample.BUWB0WDE_2a5ofF.webp → image/webp",
+      "test": "feature-tests/image-pipeline.spec.ts"
+    },
+    "caching": {
+      "claimedLabel": "first-party",
+      "status": "pass",
+      "method": "cache: { provider: memoryCache() } + Astro.cache.set({ maxAge: 5, tags }) + cache.invalidate({ tags })",
+      "evidence": "2nd request reused stamp 1795668812089-0oi2tq (x-astro-cache: HIT); after invalidate → new stamp; after 6.5 s TTL → new stamp again",
+      "test": "feature-tests/caching.spec.ts"
+    },
+    "route-prefetching": {
+      "claimedLabel": "first-party",
+      "status": "pass",
+      "method": "prefetch: { prefetchAll: true, defaultStrategy: 'hover' } + data-astro-prefetch=\"hover\"",
+      "evidence": "no request for the target on load; hover fired GET /feature-tests/prefetch-target 42 ms before the click",
+      "test": "feature-tests/route-prefetching.spec.ts"
+    },
+    "islands": {
+      "claimedLabel": "first-party",
+      "status": "pass",
+      "method": "Solid component with client:load (island) next to a Solid component with no client directive (@astrojs/solid-js)",
+      "evidence": "island counter reached 2 after hydration; 7 JS files fetched, marker of the static component found in 0 of them; island code found in client JS",
+      "test": "feature-tests/islands.spec.ts"
+    },
+    "render-modes": {
+      "claimedLabel": "first-party",
+      "status": "pass",
+      "method": "output: 'server' with export const prerender = true / false per page",
+      "evidence": "dist/client/feature-tests/render-modes/index.html exists and its stamp is stable across requests; /render-modes/ssr has no HTML in build output and its stamp changed between requests",
+      "test": "feature-tests/render-modes.spec.ts"
+    },
+    "reactivity": {
+      "claimedLabel": "first-party",
+      "status": "pass",
+      "method": "Solid signal (createSignal) in a client:load island via the official @astrojs/solid-js integration",
+      "evidence": "count text went 0 → 3 after 3 clicks; component render counter stayed at 1",
+      "test": "feature-tests/reactivity.spec.ts",
+      "suggestedLabel": "third-party"
+    },
+    "bundle-analysis": {
+      "claimedLabel": "third-party",
+      "status": "pass",
+      "method": "rollup-plugin-visualizer added to vite.plugins when ANALYZE=1 (Astro \"analyze bundle size\" recipe)",
+      "evidence": "ANALYZE=1 astro build wrote feature-tests/reports/bundle-stats.html (188 kB treemap)",
+      "test": "feature-tests/bundle-analysis.spec.ts"
+    },
+    "third-party-scripts": {
+      "claimedLabel": "first-party",
+      "status": "pass",
+      "method": "@astrojs/partytown integration + <script type=\"text/partytown\" src=\"/ft-third-party.js\">",
+      "evidence": "tag is type=text/partytown and nothing in <head> is parser-blocking; the script was fetched by the Partytown worker (resourceType fetch, never as <script>), set body[data-third-party-ran] through the DOM proxy, and its window global is absent on the main thread",
+      "test": "feature-tests/third-party-scripts.spec.ts"
+    },
+    "multi-host-deployment": {
+      "claimedLabel": "first-party",
+      "status": "pass",
+      "method": "official adapters picked by env in astro.config.mjs: @astrojs/vercel, @astrojs/netlify, @astrojs/node",
+      "evidence": "3 builds succeeded: vercel → .vercel/output/{config.json,functions/_render.func}; netlify → .netlify/v1/functions/ssr; node → dist/server/entry.mjs",
+      "test": "feature-tests/multi-host-deployment.spec.ts"
+    }
+  }
+}
