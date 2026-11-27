@@ -29,6 +29,7 @@ function placeholder(hash: string | null) {
 const thumb = placeholder(thumbhash);
 
 // Goodreads covers top out around 320px wide; the adapter's image service never upscales.
+// quality is explicit because the Vercel image service otherwise requests q=100.
 const COVER_WIDTHS = [160, 240, 320, 480];
 ---
 
@@ -39,6 +40,7 @@ const COVER_WIDTHS = [160, 240, 320, 480];
     height={480}
     onerror="window.__coverFailed&&window.__coverFailed(this)"
     priority={priority}
+    quality={75}
     sizes={sizes}
     src={resolved}
     style={thumb ? `background-image: url("${thumb}"); background-size: cover;` : undefined}
