@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { thumbHashToDataURL } from 'thumbhash';
 import { EMPTY_IMAGE_URL, getLargeBookImageUrl } from '@/features/book/book-constants';
 import { cn } from '@/lib/utils';
@@ -26,18 +27,22 @@ function placeholder(hash: string | null) {
 }
 
 const thumb = placeholder(thumbhash);
+
+// Goodreads covers top out around 320px wide; the adapter's image service never upscales.
+const COVER_WIDTHS = [160, 240, 320, 480];
 ---
 
 <div class={cn('bg-card dark:bg-card-dark relative aspect-[2/3] w-full overflow-hidden rounded-md', className)}>
-  <img
+  <Image
     alt={title}
     class="absolute inset-0 size-full object-cover"
-    decoding="async"
-    fetchpriority={priority ? 'high' : 'auto'}
-    loading={priority ? 'eager' : 'lazy'}
+    height={480}
     onerror="window.__coverFailed&&window.__coverFailed(this)"
+    priority={priority}
     sizes={sizes}
     src={resolved}
     style={thumb ? `background-image: url("${thumb}"); background-size: cover;` : undefined}
+    width={320}
+    widths={COVER_WIDTHS}
   />
 </div>

@@ -34,5 +34,8 @@ Copy `.env.example` to `.env`. Both are read at runtime on the server.
 
 ### `optimized` branch
 
-- Self-hosted Geist and Geist Mono (`@fontsource-variable/*`) replace the Google Fonts links, so fonts are served from the app's own origin.
-- Catalog queries are cached for 1 hour with in-flight de-dup (in-memory, plus Vercel runtime cache, Netlify Blobs, or Workers KV `CATALOG_CACHE`), and HTML and hashed-asset `Cache-Control` headers are set per host.
+- Fonts: Astro's built-in Fonts API (`fonts` in `astro.config.mjs` + `<Font />` in the layout) downloads Geist and Geist Mono at build time, serves them from `/_astro/fonts`, generates metric-matched fallbacks, and preloads the Latin Geist file.
+- Covers: `astro:assets` `<Image>` with `image.domains`, so each host's image CDN resizes and re-encodes them (Vercel Image Optimization, Netlify Image CDN, sharp on Node; passthrough on Cloudflare), with a `srcset` and `priority` on the first row.
+- Pages: Astro's route cache (`cache.provider` from the host adapter + `routeRules`) caches `/` and `/[id]` at the CDN for 1 hour with a 1-day stale-while-revalidate window, tagged `catalog`. Error responses opt out with `Astro.cache.set(false)`.
+- Catalog queries are also cached for 1 hour with in-flight de-dup (in-memory, plus Vercel runtime cache, Netlify Blobs, or Workers KV `CATALOG_CACHE`).
+- `build.inlineStylesheets: 'always'` inlines the CSS, and `prefetch: { prefetchAll: true }` prefetches links on hover for the ClientRouter.
