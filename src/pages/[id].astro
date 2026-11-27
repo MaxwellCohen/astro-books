@@ -25,6 +25,8 @@ try {
   console.error(error);
   errorMessage = error instanceof Error ? error.message : 'Unknown error';
   Astro.response.status = 500;
+  // Don't let the CDN keep an error page.
+  Astro.cache.set(false);
 }
 if (!book && errorMessage === undefined) Astro.response.status = 404;
 
